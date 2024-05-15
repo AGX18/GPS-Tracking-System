@@ -2,9 +2,9 @@
 void UART0_init(){
 	// activate UART0
 	SET_BIT(SYSCTL_RCGCUART_R , 0);
-	while (GET_BIT(SYSCTL_PRUART_R,0)==0); //delay
+	//while (GET_BIT(SYSCTL_PRUART_R,0)==0); //delay
 	SET_BIT(SYSCTL_RCGCGPIO_R , 0);
-	while (GET_BIT(SYSCTL_PRGPIO_R,0)==0);//delay
+	//while (GET_BIT(SYSCTL_PRGPIO_R,0)==0);//delay
 	
 	CLR_BIT(UART0_CTL_R,0);        //UART disable
 	UART0_IBRD_R = 104;     	     // IBRD = INT( 16000000/(16*9600) ) = 104
@@ -31,10 +31,10 @@ char UART0_readchar(){
 void UART2_init(){
 	// activate UART2
 	SET_BIT(SYSCTL_RCGCUART_R , 2);
-	while (GET_BIT(SYSCTL_PRUART_R,2)==0); //delay
+//	while (GET_BIT(SYSCTL_PRUART_R,2)==0); //delay
 	
 	SET_BIT(SYSCTL_RCGCGPIO_R , 3);// activate port D
-	while (GET_BIT(SYSCTL_PRGPIO_R,3)==0); //delay
+	//while (GET_BIT(SYSCTL_PRGPIO_R,3)==0); //delay
 	
 	CLR_BIT(UART2_CTL_R,0);// UART disable
 	UART2_IBRD_R = 104;      	// IBRD = INT( 16000000/(16*9600) ) = 104
@@ -68,11 +68,11 @@ char UART2_readchar(){
 			
 			recievedchar=UART2_readchar();
 			
-			GPS[counter++]=recievedchar;
+		if(recievedchar!=',')	GPS[counter++]=recievedchar;
 			
-		UART2_writechar(recievedchar);//to make any data read appear on the screen
+	UART0_writechar(recievedchar);//to make any data read appear on the screen
 			
-		}	while(recievedchar!='*');//stop when reaching * in the string
+		}	while(recievedchar!=',');//stop when reaching * in the string
 		
 		
 	}
