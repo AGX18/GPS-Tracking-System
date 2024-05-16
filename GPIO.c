@@ -46,23 +46,34 @@ void GPIO_PORTF_SW2_INIT(){
 	CLR(GPIO_PORTF_AMSEL_R ,0x01 ) ;               // disable analog function
 	CLR(GPIO_PORTF_AFSEL_R ,0x01 ) ;               // no alternate functions
 	CLR(GPIO_PORTF_PCTL_R ,0x000f );               // clear PCTL
-	CLR(GPIO_PORTF_DIR_R ,0x01 );                  // PF0 input 
-	SET(GPIO_PORTF_DEN_R,0x01 );                   // enable digital pins PF0
+	CLR(GPIO_PORTF_DIR_R ,0x01 );                  //PF0 input 
+	SET(GPIO_PORTF_DEN_R,0x01 );                   //enable digital pins PF0
 	SET(GPIO_PORTF_PUR_R ,0x01);                   // enable pull-up on PF0
 }
 	
-void GPIO_PORTF_LED12_INIT(){
+void GPIO_PORTF_LEDs_INIT(){
 	SET(SYSCTL_RCGCGPIO_R,0x20);                   // port F clock enable
-	while((SYSCTL_PRGPIO_R & 0x20)==0){}           // delay 
-  GPIO_PORTF_LOCK_R=GPIO_LOCK_KEY;               // Unlock GPIO Port F
-	SET(GPIO_PORTF_CR_R,0x06 ) ;                   // allow changes to  PF1 ,PF2
-	CLR(GPIO_PORTF_AMSEL_R ,0x06 ) ;               // disable analog function
-	CLR(GPIO_PORTF_AFSEL_R ,0x06 ) ;               // no alternate functions
-	CLR(GPIO_PORTF_PCTL_R ,0x0ff0 );               // clear PCTL
-	SET(GPIO_PORTF_DIR_R ,0x06 );                  // PF1&PF2 output   
-	SET(GPIO_PORTF_DEN_R,0x06 );                   // enable digital pins PF1 ,PF2
-	CLR(GPIO_PORTF_DATA_R ,0x06);                  // initialize leds to be off 
+	while((SYSCTL_PRGPIO_R & 0x20)==0);            // delay
+  GPIO_PORTF_LOCK_R=GPIO_LOCK_KEY;               // Unlock GPIO Port F	
+	SET(GPIO_PORTF_CR_R,0x0E ) ;                   // allow changes to  PF12 ,PF2
+	CLR(GPIO_PORTF_AMSEL_R ,0x0E ) ;               // disable analog function
+	CLR(GPIO_PORTF_AFSEL_R ,0x0E ) ;               // no alternate functions
+	CLR(GPIO_PORTF_PCTL_R ,0xfff0 );               // clear PCTL
+	SET(GPIO_PORTF_DIR_R ,0x0E );                  // PF1&PF2 output   
+	SET(GPIO_PORTF_DEN_R,0x0E );                   //enable digital pins PF12 ,PF2
+	CLR(GPIO_PORTF_DATA_R ,0x0E);                  //initialize leds to be off 
 }
+
+void GPIO_PORTF_INTERRUPT(){
+	GPIO_PORTF_IS_R = ~0X11;
+	GPIO_PORTF_IBE_R=  ~0X11;
+	GPIO_PORTF_IEV_R=0X11;
+	GPIO_PORTF_IM_R=0X11;
+	NVIC_PRI7_R|=0X20000;
+	NVIC_EN0_R|=0X40000000;
+	__enable_irq();
+}
+
 
 
 
