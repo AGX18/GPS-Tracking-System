@@ -41,8 +41,8 @@ void GPS_read(){
 	do{
 			a=UART2_readchar();
 			if(a!=GPS_Logname[i]){
-			i=0;
-			continue;// recieve the data again till all chars of log name recieved right
+					i=0;
+					continue;// recieve the data again till all chars of log name recieved right
 			} 
 			i++;
 	}while(i!=7);
@@ -56,15 +56,15 @@ void GPS_read(){
 		
 		switch(commacounter){
 				case 1: // recieve A or V
-				{
+					{
 				  valid_data=UART2_readchar();
 				  f=1;// to recieve char again
 				break;}
 	    	case 2 : // to recieve a latitude
 					{
 	      	get_array(lat);		//to store latitude in char array
-                   commacounter++;	
-	                 f=0;   //to not to recive a char after this step as we recieved a comma in get_arrray and comma counter is already incremented
+          commacounter++;	
+						f=0;   //to not to recive a char after this step as we recieved a comma in get_arrray and comma counter is already incremented
 				  break;}
 	    	case 3:{   // to recieve N or S
 		  	  N_or_s= UART2_readchar();
@@ -97,9 +97,10 @@ void GPS_read(){
 		string_out("\n");
 		string_out(longitude);
 		string_out("\n");
-	if( N_or_s=='N')	currentlat=atof(lat);   //to convert latitude(char array) into float
+	if( N_or_s=='N')		currentlat=atof(lat);   //to convert latitude(char array) into float
 			else     currentlat=-atof(lat);
 	
+			 
 		
 	if(E_or_W=='E')	currentlong=atof(longitude);    //to convert longitude(char array) into float
 	else     currentlong=-atof(longitude);
@@ -107,5 +108,4 @@ void GPS_read(){
 	}
 }
 		
-	
-
+		
