@@ -65,13 +65,14 @@ void GPIO_PORTF_LEDs_INIT(){
 }
 
 void GPIO_PORTF_INTERRUPT(){
-	GPIO_PORTF_IS_R = ~0X11;
-	GPIO_PORTF_IBE_R=  ~0X11;
-	GPIO_PORTF_IEV_R=0X11;
-	GPIO_PORTF_IM_R=0X11;
-	NVIC_PRI7_R|=0X20000;
-	NVIC_EN0_R|=0X40000000;
-	__enable_irq();
+        GPIO_PORTF_IM_R &= ~0x11;			// Disable interrupt on GPIO Port F during configuration
+	GPIO_PORTF_IS_R &= ~0x11;			// Set interrupt sense to edge-sensitive for PF0 and PF4
+        GPIO_PORTF_IBE_R &= ~0x11;			// Disable both edges trigger for PF0 and PF4 (detect single edge)
+	GPIO_PORTF_IEV_R |= 0x11;			// Set interrupt event to rising edge for PF0 and PF4
+        GPIO_PORTF_IM_R |= 0x11;			// Enable interrupt mask for PF0 and PF4
+        NVIC_PRI7_R = (NVIC_PRI7_R & 0xFF00FFFF) | 0x00200000;// Set priority 1 for interrupt 30 (GPIO Port F)
+	NVIC_EN0_R |= 0x40000000;			// Enable interrupt 30 in NVIC (GPIO Port F)
+	__enable_irq();// Enable global interrupts
 }
 
 
