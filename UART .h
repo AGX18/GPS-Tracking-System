@@ -21,5 +21,7 @@ char UART2_readchar();
 void UART2_writechar(char data);
 // function to save every char recieved from GPS module in the array till '*'
 void get_array(char*GPS);
+//function sends string to the serial monitor (UART0)
+void string_out(char *str);
 
 #endif
