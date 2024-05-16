@@ -46,7 +46,7 @@ int main(){
 	destination_reached=false;	//initialising bool for the destination reached flag
 	//ports initialisation in main
 	GPIO_PORTF_SW2_INIT();
-	GPIO_PORTF_LED12_INIT();
+	GPIO_PORTF_LEDs_INIT();
 	UART0_init();
 	UART2_init();
 	GPIO_PORTB_INIT();
