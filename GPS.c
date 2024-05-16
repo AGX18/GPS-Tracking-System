@@ -39,7 +39,7 @@ void GPS_read(){
 	f=1; 
 	//check if we recieve thr right log name
 	do{
-			a=	UART2_readchar();
+			a=UART2_readchar();
 			if(a!=GPS_Logname[i]){
 			i=0;
 			continue;// recieve the data again till all chars of log name recieved right
@@ -100,7 +100,6 @@ void GPS_read(){
 	if( N_or_s=='N')	currentlat=atof(lat);   //to convert latitude(char array) into float
 			else     currentlat=-atof(lat);
 	
-			 
 		
 	if(E_or_W=='E')	currentlong=atof(longitude);    //to convert longitude(char array) into float
 	else     currentlong=-atof(longitude);
