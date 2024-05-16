@@ -1,6 +1,3 @@
-#include "GPS.h"
-# include "UART .h"
-#include <string.h>
 #include<math.h>
 #include<stdlib.h>
 float currentlong,currentlat;
@@ -8,16 +5,12 @@ char i=0;
 char GPS_Logname[]="$GNRMC,";
 char valid_data;
 char f=1;
-//char finished=0,flag=0;
 char commacounter=0;
 char lat[13];
 char longitude[13];
-//char *token;
 char N_or_s;
 char E_or_W;
-
 char speed[20];
-
 char a;
 
 float toDegree(float L){
@@ -43,12 +36,13 @@ float getDistance(float long1,float lat1,float long2,float lat2){
 
 void GPS_read(){
 	commacounter=0;
-	f=1;
+	f=1; 
+	//check if we recieve thr right log name
 	do{
 			a=	UART2_readchar();
 			if(a!=GPS_Logname[i]){
-					i=0;
-					continue;
+			i=0;
+			continue;// recieve the data again till all chars of log name recieved right
 			} 
 			i++;
 	}while(i!=7);
@@ -57,35 +51,40 @@ void GPS_read(){
 		if(f)	{
 			char g=UART2_readchar();
 			if(g==',')
-			commacounter++;
+			commacounter++;  
 		}
 		
 		switch(commacounter){
-				case 1:
-					{
+				case 1: // recieve A or V
+				{
 				  valid_data=UART2_readchar();
-				  f=1;
+				  f=1;// to recieve char again
 				break;}
-	    	case 2 :
+	    	case 2 : // to recieve a latitude
 					{
-	      	get_array(lat);		
-          commacounter++;	f=0;
+	      	get_array(lat);		//to store latitude in char array
+                   commacounter++;	
+	                 f=0;   //to not to recive a char after this step as we recieved a comma in get_arrray and comma counter is already incremented
 				  break;}
-	    	case 3:{
+	    	case 3:{   // to recieve N or S
 		  	  N_or_s= UART2_readchar();
-	        f=1;
+	        f=1;       //to recieve char again
 				  break;}	
-		    case 4:{
-				  get_array(longitude);	
-			    commacounter++;f=0; break;}
-	    	case 5:{
+		    case 4:{  //to recieve a longitude
+				  get_array(longitude);	  //to store  longitude in char array   
+			    commacounter++;
+				f=0;    //to not to recive a char after this step as we recieved a comma in get_arrray and comma counter is already incremented
+				break;}
+	    	case 5:{  // to recieve E or W
 			    E_or_W= UART2_readchar();
-		    	f=1;
+		    	f=1;   //to recieve char again
 				  break;}
-				case 6:
-					{
-			    get_array(speed);	
-				  commacounter++;f=0;break;}
+				case 6:   // to recieve speed
+					{    
+			    get_array(speed);	 //to store speed in char array
+				  commacounter++;
+					f=0; // //to not to recive a char after this step as we recieved a comma in get_arrray and comma counter is already incremented
+					break;}
 		}
 				
 		if(commacounter==7) break;				
@@ -98,35 +97,16 @@ void GPS_read(){
 		string_out("\n");
 		string_out(longitude);
 		string_out("\n");
-	if( N_or_s=='N')		currentlat=atof(lat);
+	if( N_or_s=='N')	currentlat=atof(lat);   //to convert latitude(char array) into float
 			else     currentlat=-atof(lat);
 	
 			 
 		
-	if(E_or_W=='E')	currentlong=atof(longitude);
+	if(E_or_W=='E')	currentlong=atof(longitude);    //to convert longitude(char array) into float
 	else     currentlong=-atof(longitude);
 		
 	}
 }
 		
-		
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 
