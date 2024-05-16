@@ -70,10 +70,21 @@ char UART2_readchar(){
 			
 		if(recievedchar!=',')	GPS[counter++]=recievedchar;
 			
-	UART0_writechar(recievedchar);//to make any data read appear on the screen
+	
+			//to make any data read appear on the screen
 			
 		}	while(recievedchar!=',');//stop when reaching * in the string
 		
 		
 	}
+	
+	
+	
+	
+void string_out(char *str){
+	while(*str !='\0'){
+		UART0_writechar(*str);
+		str++;
+	}
+}
 	
