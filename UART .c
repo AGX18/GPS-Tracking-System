@@ -69,9 +69,7 @@ char UART2_readchar(){
 			recievedchar=UART2_readchar();
 			
 		if(recievedchar!=',')	GPS[counter++]=recievedchar;
-			
-	
-			//to make any data read appear on the screen
+		
 			
 		}	while(recievedchar!=',');//stop when reaching * in the string
 		
