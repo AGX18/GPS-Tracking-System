@@ -14,6 +14,6 @@ void GPIO_PORTE_INIT();
 // Function to initialize port F SW2
 void GPIO_PORTF_SW2_INIT();
 // Function to initialize port F LED12
-void GPIO_PORTF_LED12_INIT();
+void GPIO_PORTF_LEDs_INIT();
 
 #endif
